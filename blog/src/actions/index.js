@@ -6,6 +6,13 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
   //using await to wait for the response of the API to arrive
   await dispatch(fetchPosts());
   const userIds = _.uniq(_.map(getState().posts, "userId"));
+  /*Above line of codes is equivalent = const uniqueUserIds = getState().posts.map(userid => {
+    return userid.userId;
+  });
+  const userIds = uniqueUserIds.filter((item, index) => {
+    return uniqueUserIds.indexOf(item) === index;
+  });*/
+
   //no need to put await as there is no logic after the line, we dont care about how long the user takes to return
   userIds.forEach(id => dispatch(fetchUser(id)));
 

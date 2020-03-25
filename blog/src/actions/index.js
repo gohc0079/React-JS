@@ -11,7 +11,10 @@ export const fetchPostsAndUsers = () => async (dispatch, getState) => {
   });
   const userIds = uniqueUserIds.filter((item, index) => {
     return uniqueUserIds.indexOf(item) === index;
-  });*/
+  });
+  OR 
+  const userIds = [...new Set(getState().posts)]
+  */
 
   //no need to put await as there is no logic after the line, we dont care about how long the user takes to return
   userIds.forEach(id => dispatch(fetchUser(id)));

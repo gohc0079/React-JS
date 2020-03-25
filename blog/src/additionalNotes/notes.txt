@@ -1,0 +1,75 @@
+console.clear()
+
+const createPolicy = (name,amount)=>{
+  return {
+    type: 'CREATE_POLICY',
+    payload : {name,amount}
+  }
+}
+
+const deletePolicy = (name)=>{
+  return {
+    type: 'DELETE_POLICY',
+    payload : {name}
+  }
+}
+
+const createClaim = (name,amountToCollect)=>{
+  return {
+    type: 'CREATE_CLAIM',
+    payload : {name,amountToCollect}
+  }
+}
+
+//reducers
+const ClaimsHistory = (oldListOfClaims = [],action)=>{
+  if(action.type === 'CREATE_CLAIM')
+    {
+      return [...oldListOfClaims,action.payload]
+    }
+  return oldListOfClaims
+}
+
+const policies = (oldListOfPolicies = [],action)=>{
+  if(action.type === 'CREATE_POLICY')
+    {
+      return [...oldListOfPolicies,action.payload]
+    }
+  else if (action.type === 'DELETE_POLICY')
+    {
+      const newPoliciesList  = oldListOfPolicies.filter((item)=> item.name !==action.payload.name)
+      return newPoliciesList;
+    }
+  return oldListOfPolicies
+}
+
+const accounts = (currentAmount = 100,action)=>{
+  if(action.type ==='CREATE_POLICY')
+    {
+      return currentAmount  + action.payload.amount;
+    }
+  else if(action.type === 'CREATE_CLAIM')
+    {
+      return currentAmount  - action.payload.amountToCollect
+    }
+  return currentAmount
+}
+
+const {createStore,combineReducers} = Redux
+
+const ourDepartments = combineReducers({
+  accounts,policies,ClaimsHistory
+})
+
+
+//testing application
+const store = createStore(ourDepartments);
+const action = createPolicy('Alex',200)
+const action1 = createPolicy('Karen',50)
+const action2 = deletePolicy('Karen')
+const action3 = createClaim('Alex',100)
+store.dispatch(action)
+store.dispatch(action1)
+store.dispatch(action2)
+store.dispatch(action3)
+console.log(store.getState())

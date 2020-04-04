@@ -26,6 +26,10 @@ class StreamCreate extends React.Component {
     }
   }
 
+  /*formValues is passed into by redux-form. Wwhen form is pass into redux-form, redux form will pass a paramter of the 
+  form reducer into the functions that are pass into the redux form as paramters.(validate & form)
+  For callback functions that are passed into the Field Component, the functions will receive Field built in object properties
+  as parameters */
   onSubmit(formValues) {
     console.log(formValues);
   }

@@ -1,5 +1,8 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { createStream } from "../../actions";
+
 //Field is a component and reduxForm is a function
 
 class StreamCreate extends React.Component {
@@ -30,9 +33,10 @@ class StreamCreate extends React.Component {
   form reducer into the functions that are pass into the redux form as paramters.(validate & form)
   For callback functions that are passed into the Field Component, the functions will receive Field built in object properties
   as parameters */
-  onSubmit(formValues) {
+  onSubmit = formValues => {
     console.log(formValues);
-  }
+    this.props.createStream(formValues);
+  };
   /*when Field component is wired up to the component, it does not know how to render an input
   The field component is just to make sure that the redux library is being linked up*/
   render() {
@@ -65,7 +69,9 @@ const validate = formValues => {
 };
 
 //reduxForm will automatically call connect function
-export default reduxForm({
+const formWrapped = reduxForm({
   form: "streamCreate",
   validate
 })(StreamCreate);
+
+export default connect(null, { createStream })(formWrapped);

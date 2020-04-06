@@ -33,7 +33,7 @@ class StreamCreate extends React.Component {
   form reducer into the functions that are pass into the redux form as paramters.(validate & form)
   For callback functions that are passed into the Field Component, the functions will receive Field built in object properties
   as parameters */
-  onSubmit = formValues => {
+  onSubmit = (formValues) => {
     console.log(formValues);
     this.props.createStream(formValues);
   };
@@ -57,7 +57,7 @@ class StreamCreate extends React.Component {
   }
 }
 
-const validate = formValues => {
+const validate = (formValues) => {
   const errors = {};
   if (!formValues.title) {
     errors.title = "You must enter a title";
@@ -71,7 +71,7 @@ const validate = formValues => {
 //reduxForm will automatically call connect function
 const formWrapped = reduxForm({
   form: "streamCreate",
-  validate
+  validate,
 })(StreamCreate);
 
 export default connect(null, { createStream })(formWrapped);

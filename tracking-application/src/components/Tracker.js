@@ -45,8 +45,6 @@ const Tracker = () => {
       </div>
     );
   };
-
-  console.log(info);
   if (info.length === 0) {
     return <div>Loading...</div>;
   }

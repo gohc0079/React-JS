@@ -1,9 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import api, { headers } from "./api";
 import { getDateFromString } from "./getDate";
+import showNotification from "./notifications";
+
 const Tracker = () => {
   const [info, setInfo] = useState([]);
   const [country, setCountry] = useState("singapore");
+  const [notificationCount, setCount] = useState(0);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -15,7 +18,7 @@ const Tracker = () => {
         );
         setInfo(response.data);
       })(),
-      900000
+      300000
     );
   }, [country]);
 
@@ -31,6 +34,7 @@ const Tracker = () => {
       serious_critical,
       record_date,
     } = info.latest_stat_by_country[0];
+
     return (
       <div>
         <p>Country: {country_name}</p>
@@ -49,6 +53,19 @@ const Tracker = () => {
     return <div>Loading...</div>;
   }
 
+  if (
+    notificationCount === 0 &&
+    info.latest_stat_by_country.length > 0 &&
+    country === "singapore"
+  ) {
+    const { total_deaths, new_deaths } = info.latest_stat_by_country[0];
+
+    showNotification({
+      title: "Singapore covid news",
+      message: `Death toll reaches ${total_deaths}, ${new_deaths} new death(s) recorded today`,
+    });
+    setCount(1);
+  }
   return (
     <div className="six wide tablet eight wide computer column container">
       <form

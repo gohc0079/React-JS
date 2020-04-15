@@ -1,5 +1,5 @@
 import axios from "axios";
-const KEY = "df7155e4ddmsh79bcf6dc80730b0p1b065ejsn87b33de44441";
+const KEY = "ccfb007929msh6d298a8b0ccee59p11d9e7jsne32da6975ce0";
 export const headers = {
   headers: {
     "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",

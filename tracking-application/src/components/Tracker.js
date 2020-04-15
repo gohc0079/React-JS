@@ -1,19 +1,18 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import api, { headers } from "./api";
 import { getDateFromString } from "./getDate";
 import showNotification from "./notifications";
 
 const Tracker = () => {
-  const [info, setInfo] = useState([]);
-  const [country, setCountry] = useState("singapore");
-  const [notificationCount, setCount] = useState(0);
+  const [info, setInfo] = useState(null);
+  const [country, setCountry] = useState("Singapore");
   const inputRef = useRef(null);
 
   useEffect(() => {
     setInterval(
       (async () => {
         const response = await api.get(
-          `https://coronavirus-monitor.p.rapidapi.com/coronavirus/latest_stat_by_country.php?country=${country}`,
+          `https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_particular_country.php?country=${country}`,
           headers
         );
         setInfo(response.data);
@@ -23,49 +22,39 @@ const Tracker = () => {
   }, [country]);
 
   const renderInfo = (info) => {
-    const {
-      country_name,
-      total_cases,
-      new_cases,
-      active_cases,
-      total_deaths,
-      new_deaths,
-      total_recovered,
-      serious_critical,
-      record_date,
-    } = info.latest_stat_by_country[0];
+    if (info === null) {
+      return <div>Loading...</div>;
+    } else if (!info) {
+      return <div>No data available!</div>;
+    } else {
+      const lastIndex = info.stat_by_country.length - 1;
+      const {
+        country_name,
+        total_cases,
+        new_cases,
+        active_cases,
+        total_deaths,
+        new_deaths,
+        total_recovered,
+        serious_critical,
+        record_date,
+      } = info.stat_by_country[lastIndex];
 
-    return (
-      <div>
-        <p>Country: {country_name}</p>
-        <p>Total cases:{total_cases}</p>
-        <p>New cases: {new_cases}</p>
-        <p>Active cases:{active_cases} </p>
-        <p>Deaths:{total_deaths}</p>
-        <p>New Deaths:{new_deaths}</p>
-        <p>Total recovered:{total_recovered}</p>
-        <p>Serious:{serious_critical}</p>
-        <p>Updated at: {getDateFromString(record_date)}</p>
-      </div>
-    );
+      return (
+        <div>
+          <p>Country: {country_name}</p>
+          <p>Total cases:{total_cases}</p>
+          <p>New cases: {new_cases}</p>
+          <p>Active cases:{active_cases} </p>
+          <p>Deaths:{total_deaths}</p>
+          <p>New Deaths:{new_deaths}</p>
+          <p>Total recovered:{total_recovered}</p>
+          <p>Serious:{serious_critical}</p>
+          <p>Updated at: {getDateFromString(record_date)}</p>
+        </div>
+      );
+    }
   };
-  if (info.length === 0) {
-    return <div>Loading...</div>;
-  }
-
-  if (
-    notificationCount === 0 &&
-    info.latest_stat_by_country.length > 0 &&
-    country === "singapore"
-  ) {
-    const { total_deaths, new_deaths } = info.latest_stat_by_country[0];
-
-    showNotification({
-      title: "Singapore covid news",
-      message: `Death toll reaches ${total_deaths}, ${new_deaths} new death(s) recorded today`,
-    });
-    setCount(1);
-  }
   return (
     <div className="six wide tablet eight wide computer column container">
       <form
@@ -85,12 +74,7 @@ const Tracker = () => {
           </div>
         </div>
       </form>
-
-      {info.latest_stat_by_country.length > 0 ? (
-        <div>{renderInfo(info)}</div>
-      ) : (
-        <div>No data available!</div>
-      )}
+      {renderInfo(info)}
     </div>
   );
 };

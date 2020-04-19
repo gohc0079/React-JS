@@ -197,6 +197,7 @@ button:disabled {
 }
 
 .ui-button {
+  margin-top: 80px;
   float: right;
   margin-right: 220px;
 }

@@ -9,7 +9,7 @@ const Template = (props) => {
         <Link className="item" to="/">
           <i className="fa fa-th-list"></i> Dashboard
         </Link>
-        <Link className="item" to="">
+        <Link className="item" to="/createTask">
           <i className="fa fa-plus"></i> New Task
         </Link>
         <Link className="item" to="/">

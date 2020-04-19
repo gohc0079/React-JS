@@ -1,6 +1,10 @@
 import api from "../api";
-import { REGISTER, LOGIN, LOGOUT } from "../constants/constants";
+import { REGISTER, LOGIN, LOGOUT, CREATE_TASK } from "../constants/constants";
 import history from "../history";
+
+const apiHeaders = (token) => {
+  return { headers: { Authorization: `Bearer ${token}` } };
+};
 
 export const createUser = (formValues) => async (dispatch, getState) => {
   const response = await api.post("/users", { ...formValues });
@@ -21,11 +25,20 @@ export const UserLogin = (formValues) => async (dispatch, getState) => {
   }
 };
 
-export const UserLogout = (formValues) => async (dispatch, getState) => {
-  const config = {
-    headers: { Authorization: `Bearer ${getState().user.user}` },
-  };
+export const UserLogout = () => async (dispatch, getState) => {
+  const config = apiHeaders(getState().user.user);
   await api.post("/users/logout", {}, config);
 
   dispatch({ type: LOGOUT });
+};
+
+export const createTask = (formValues) => async (dispatch, getState) => {
+  console.log(getState().user.user);
+  const config = {
+    headers: {
+      ...apiHeaders(getState().user.user).headers,
+    },
+  };
+  await api.post("/tasks", formValues, config);
+  dispatch({ type: CREATE_TASK });
 };

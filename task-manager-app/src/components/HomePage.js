@@ -1,7 +1,22 @@
 import React from "react";
+import history from "../history";
+import { connect } from "react-redux";
 
-const Homepage = () => {
-  return <h1>DashBoard</h1>;
+const Homepage = (props) => {
+  if (Object.keys(props.user).length === 0) {
+    history.push("/login");
+    return <React.Fragment></React.Fragment>;
+  }
+  return (
+    <React.Fragment>
+      <h1>DashBoard</h1>
+      <hr class="task-hr" />
+    </React.Fragment>
+  );
 };
 
-export default Homepage;
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+
+export default connect(mapStateToProps)(Homepage);

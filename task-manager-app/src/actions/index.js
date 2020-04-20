@@ -1,5 +1,11 @@
 import api from "../api";
-import { REGISTER, LOGIN, LOGOUT, CREATE_TASK } from "../constants/constants";
+import {
+  REGISTER,
+  LOGIN,
+  LOGOUT,
+  CREATE_TASK,
+  GET_TASK,
+} from "../constants/constants";
 import history from "../history";
 
 const apiHeaders = (token) => {
@@ -33,7 +39,6 @@ export const UserLogout = () => async (dispatch, getState) => {
 };
 
 export const createTask = (formValues) => async (dispatch, getState) => {
-  console.log(getState().user.user);
   const config = {
     headers: {
       ...apiHeaders(getState().user.user).headers,
@@ -41,4 +46,10 @@ export const createTask = (formValues) => async (dispatch, getState) => {
   };
   await api.post("/tasks", formValues, config);
   dispatch({ type: CREATE_TASK });
+};
+export const getTask = (id) => async (dispatch, getState) => {
+  const config = apiHeaders(getState().user.user);
+  const response = await api.get(`/tasks/${id}`, config);
+
+  dispatch({ type: GET_TASK, payload: response.data });
 };

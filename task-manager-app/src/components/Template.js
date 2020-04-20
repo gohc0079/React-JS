@@ -12,7 +12,7 @@ const Template = (props) => {
         <Link className="item" to="/createTask">
           <i className="fa fa-plus"></i> New Task
         </Link>
-        <Link className="item" to="/">
+        <Link className="item" to="/editTask/5e9db7e274688a2e5ce8bf07">
           <i className="fa fa-user"></i> Profile
         </Link>
         <Link className="item" to="/login" onClick={props.UserLogout}>

@@ -4,6 +4,7 @@ import DatePicker, { formatDates, normalizeDates } from "./DatePicker";
 
 const Taskform = (props) => {
   const imageRef = useRef(null);
+
   const renderInput = ({ input, meta, type, placeholder, label }) => {
     const className = `eight wide field ${
       meta.error && meta.touched ? "error" : ""
@@ -30,24 +31,12 @@ const Taskform = (props) => {
     );
   };
 
-  const imageOnChange = (e) => {
-    let formData = new FormData();
-    //image.current.files[0].name
-    formData.append("taskpic", imageRef.current.value);
-    console.log(imageRef);
-  };
-
   const renderImage = ({ label }) => {
     return (
       <div>
         <label>{label}</label>
         <div>
-          <input
-            ref={imageRef}
-            type="file"
-            accept=".jpg, .png, .jpeg"
-            onChange={imageOnChange}
-          />
+          <input ref={imageRef} type="file" accept=".jpg, .png, .jpeg" />
         </div>
       </div>
     );
@@ -65,7 +54,6 @@ const Taskform = (props) => {
 
   const onSubmit = (formValues) => {
     const formData = { ...formValues, taskpic: imageRef.current.value };
-    console.log(formData);
     props.onSubmit(formData);
   };
 

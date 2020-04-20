@@ -10,7 +10,7 @@ const Homepage = (props) => {
   return (
     <React.Fragment>
       <h1>DashBoard</h1>
-      <hr class="task-hr" />
+      <hr className="task-hr" />
     </React.Fragment>
   );
 };

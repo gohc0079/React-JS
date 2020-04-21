@@ -259,6 +259,9 @@ button:disabled {
 .tab button:hover {
   background-color: blueviolet;
 }
+.imageUploader {
+  cursor: pointer;
+}
 
 .tabcontent {
   display: none;

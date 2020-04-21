@@ -54,8 +54,10 @@ class DatePicker extends PureComponent {
 
 export const formatDates = (value) => (value ? moment(value) : null);
 
-export const normalizeDates = (value) =>
-  value ? value.format("YYYY-MM-DD") : null;
+export const normalizeDates = (value) => {
+  console.log(value);
+  return value ? value.format("YYYY-MM-DD") : null;
+};
 
 export const FieldDatePicker = (props) => {
   return (

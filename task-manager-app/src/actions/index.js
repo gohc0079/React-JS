@@ -5,6 +5,7 @@ import {
   LOGOUT,
   CREATE_TASK,
   GET_TASK,
+  EDIT_TASK,
 } from "../constants/constants";
 import history from "../history";
 
@@ -52,4 +53,10 @@ export const getTask = (id) => async (dispatch, getState) => {
   const response = await api.get(`/tasks/${id}`, config);
 
   dispatch({ type: GET_TASK, payload: response.data });
+};
+export const editTask = (id, formValues) => async (dispatch, getState) => {
+  const config = apiHeaders(getState().user.user);
+  const response = await api.patch(`/tasks/${id}`, formValues, config);
+
+  dispatch({ type: EDIT_TASK, payload: response.data });
 };

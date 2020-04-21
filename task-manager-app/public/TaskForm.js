@@ -85,13 +85,11 @@ const Taskform = (props) => {
   };
 
   const onSubmit = (formValues) => {
-    console.log(formValues);
     const formData = new FormData();
     formData.append("description", formValues.description);
     formData.append("due", formValues.due);
-    if (formValues.completed) {
-      formData.append("completed", formValues.completed);
-    }
+    formData.append("completed", formValues.completed);
+    console.log(imageFile);
     if (imageFile !== null) {
       formData.append("taskpic", imageFile);
     }

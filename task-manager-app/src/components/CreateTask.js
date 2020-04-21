@@ -5,12 +5,12 @@ import { createTask } from "../actions";
 
 const CreateTask = (props) => {
   return (
-    <React.Fragment>
+    <div className="container">
       <h1>Create Task</h1>
       <hr className="task-hr" />
       <br />
       <Taskform onSubmit={props.createTask} />
-    </React.Fragment>
+    </div>
   );
 };
 

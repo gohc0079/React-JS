@@ -268,3 +268,13 @@ button:disabled {
   padding: 6px;
   border-top: none;
 }
+.trash {
+  position: absolute;
+  right: 220px;
+  top: 25px;
+  cursor: pointer;
+}
+
+.container {
+  position: relative;
+}

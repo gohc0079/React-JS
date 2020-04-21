@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import history from "../history";
 import { UserLogout } from "../actions";
 const Template = (props) => {
+  if (Object.keys(props.user).length === 0) {
+    history.push("/login");
+  }
   return (
     <React.Fragment>
       <div className="ui left visible sidebar inverted vertical menu">
@@ -12,7 +16,7 @@ const Template = (props) => {
         <Link className="item" to="/createTask">
           <i className="fa fa-plus"></i> New Task
         </Link>
-        <Link className="item" to="/editTask/5e9e9714a647ff1f9c0d26ab">
+        <Link className="item" to="/editTask/5e9f05b93d727705083c6a67">
           <i className="fa fa-user"></i> Profile
         </Link>
         <Link className="item" to="/login" onClick={props.UserLogout}>
@@ -24,4 +28,8 @@ const Template = (props) => {
   );
 };
 
-export default connect(null, { UserLogout })(Template);
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+
+export default connect(mapStateToProps, { UserLogout })(Template);

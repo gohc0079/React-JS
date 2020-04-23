@@ -182,7 +182,7 @@ button:disabled {
 }
 
 .task-hr {
-  width: 670px;
+  width: 100%;
   /* old IE */
   background-color: #333;
   /* Modern Browsers */
@@ -239,6 +239,7 @@ button:disabled {
 }
 
 .tab {
+  width: 100%;
   overflow: hidden;
   border: 1px solid #7c5cbf;
   border-radius: 5px;
@@ -277,4 +278,8 @@ button:disabled {
 
 .container {
   position: relative;
+  width: 670px;
+}
+.wrapper hr {
+  width: 670px;
 }

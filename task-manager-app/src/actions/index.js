@@ -7,6 +7,7 @@ import {
   GET_TASK,
   EDIT_TASK,
   DELETE_TASK,
+  GET_TASKS,
 } from "../constants/constants";
 import history from "../history";
 
@@ -72,4 +73,9 @@ export const deleteTask = (id) => async (dispatch, getState) => {
   await api.delete(`/tasks/${id}`, config);
   history.push("/");
   dispatch({ type: DELETE_TASK });
+};
+export const getTasks = () => async (dispatch, getState) => {
+  const config = apiHeaders(getState().user.user);
+  const response = await api.get(`/tasks`, config);
+  dispatch({ type: GET_TASKS, payload: response.data });
 };

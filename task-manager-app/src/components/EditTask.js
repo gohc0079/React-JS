@@ -61,7 +61,7 @@ const EditTask = (props) => {
     return <div>Loading...</div>;
   }
   return (
-    <React.Fragment>
+    <div className="wrapper">
       <h1 className="title">Edit Task</h1>
       <i
         className="trash alternate icon"
@@ -78,12 +78,12 @@ const EditTask = (props) => {
         imageString={task.taskpic}
         onSubmit={handleSubmit}
       />
-    </React.Fragment>
+    </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return { task: state.tasks };
+const mapStateToProps = (state, ownProps) => {
+  return { task: state.tasks[ownProps.match.params.id] };
 };
 export default connect(mapStateToProps, { getTask, editTask, deleteTask })(
   EditTask

@@ -8,6 +8,25 @@ const Login = (props) => {
   const onSubmit = (formValues) => {
     props.UserLogin(formValues);
   };
+
+  const renderField = ({ input, meta, type, placeholder }) => {
+    const className = `field ${meta.error && meta.touched ? "error" : ""}`;
+    return (
+      <div className={className}>
+        <input {...input} type={type} placeholder={placeholder}></input>
+        {renderError(meta)}
+      </div>
+    );
+  };
+  const renderError = ({ error, touched }) => {
+    if (touched && error) {
+      return (
+        <div className="ui error message">
+          <div className="header">{error}</div>
+        </div>
+      );
+    }
+  };
   return (
     <div className="centered-form">
       <div className="centered-form__box">
@@ -16,14 +35,14 @@ const Login = (props) => {
           <Field
             name="email"
             placeholder="Email"
-            component="input"
+            component={renderField}
             type="text"
           />
           <Field
             name="password"
             placeholder="Password"
             type="password"
-            component="input"
+            component={renderField}
           />
           <button className="ui button primary">Submit</button>
         </form>

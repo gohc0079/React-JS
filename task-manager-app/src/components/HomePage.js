@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { getTasks } from "../actions";
 import { connect } from "react-redux";
+import TableDetails from "./TableDetails";
 
 const Homepage = (props) => {
   const [date, setDate] = useState("");
   const [taskObjs, setTask] = useState([]);
+
+  let clickEvent = null;
   useEffect(() => {
     props.getTasks();
-    setDate("2020-04-22");
+    handleClick();
   }, []);
 
   useEffect(() => {
@@ -22,14 +25,19 @@ const Homepage = (props) => {
     }
   }, [props.tasks, date]);
 
-  console.log(taskObjs);
+  const handleClick = () => {
+    clickEvent.click();
+    clickEvent.focus();
+  };
+
   return (
-    <div className="container">
+    <div className=" container">
       <h1>DashBoard</h1>
       <hr className="task-hr" />
       <br />
       <div className="tab">
         <button
+          ref={(e) => (clickEvent = e)}
           className="tablinks"
           onClick={() => {
             setDate("2020-04-22");
@@ -53,6 +61,12 @@ const Homepage = (props) => {
         >
           History
         </button>
+      </div>
+      <div>
+        <TableDetails
+          details={taskObjs}
+          headers={["ID", "Description", "Completed"]}
+        />
       </div>
     </div>
   );

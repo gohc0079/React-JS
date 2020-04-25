@@ -257,7 +257,8 @@ button:disabled {
 }
 
 .tab button.active,
-.tab button:hover {
+.tab button:hover,
+.tab button:focus {
   background-color: blueviolet;
 }
 .imageUploader {

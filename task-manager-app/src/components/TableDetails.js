@@ -5,7 +5,6 @@ import { ITEMS_PER_PAGE } from "../constants/constants";
 const TableDetails = ({ details, headers }) => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
-  let subArrLen = 0;
   useEffect(() => {
     let subDetails = [];
     const incrementalIdx = page * ITEMS_PER_PAGE;
@@ -19,10 +18,17 @@ const TableDetails = ({ details, headers }) => {
     setData(subDetails);
   }, [page, details]);
 
-  if (details.length > 0) {
-    subArrLen = parseInt(details.length / ITEMS_PER_PAGE);
-    subArrLen = details.length % 2 === 1 ? ++subArrLen : subArrLen;
-  }
+  const handlePaging = (pageIndex) => {
+    setPage((prevPage) => {
+      if (
+        prevPage + pageIndex > -1 &&
+        prevPage + pageIndex < Math.ceil(details.length / ITEMS_PER_PAGE)
+      ) {
+        return prevPage + pageIndex;
+      }
+      return prevPage;
+    });
+  };
 
   return (
     <Table celled>
@@ -48,24 +54,38 @@ const TableDetails = ({ details, headers }) => {
         <Table.Row>
           <Table.HeaderCell colSpan="3">
             <Menu floated="right" pagination>
-              <Menu.Item as="a" icon>
+              <Menu.Item
+                as="a"
+                icon
+                onClick={() => {
+                  handlePaging(-1);
+                }}
+              >
                 <Icon name="chevron left" />
               </Menu.Item>
               {details.length > 0 ? (
-                [...Array(subArrLen)].map((e, i) => (
-                  <Menu.Item
-                    onClick={() => {
-                      setPage(i);
-                    }}
-                  >
-                    {i + 1}
-                  </Menu.Item>
-                ))
+                [...Array(Math.ceil(details.length / ITEMS_PER_PAGE))].map(
+                  (e, i) => (
+                    <Menu.Item
+                      onClick={() => {
+                        setPage(i);
+                      }}
+                    >
+                      {i + 1}
+                    </Menu.Item>
+                  )
+                )
               ) : (
                 <React.Fragment></React.Fragment>
               )}
 
-              <Menu.Item as="a" icon>
+              <Menu.Item
+                as="a"
+                icon
+                onClick={() => {
+                  handlePaging(1);
+                }}
+              >
                 <Icon name="chevron right" />
               </Menu.Item>
             </Menu>

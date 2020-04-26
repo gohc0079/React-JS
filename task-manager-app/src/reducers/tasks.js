@@ -12,11 +12,11 @@ export default (state = {}, action) => {
     case GET_TASKS:
       return { ...state, ..._.mapKeys(action.payload, "_id") };
     case CREATE_TASK:
-      return { ...state };
+      return { ...state, [action.payload._id]: action.payload };
     case GET_TASK:
       return { ...state, [action.payload._id]: action.payload };
     case EDIT_TASK:
-      return { ...state, ...action.payload };
+      return { ...state, [action.payload._id]: action.payload };
     case DELETE_TASK:
       return {};
     default:

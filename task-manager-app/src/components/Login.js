@@ -3,10 +3,11 @@ import { Field, reduxForm } from "redux-form";
 import { UserLogin } from "../actions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
+import ErrorBlock from "./ErrorBlock";
 const Login = (props) => {
   const onSubmit = (formValues) => {
     props.UserLogin(formValues);
+    props.reset();
   };
 
   const renderField = ({ input, meta, type, placeholder }) => {
@@ -45,10 +46,19 @@ const Login = (props) => {
             component={renderField}
           />
           <button className="ui button primary">Submit</button>
+
+          <div style={{ marginTop: "20px" }}>
+            {props.status && props.status >= 400 ? (
+              <ErrorBlock errorMessage={props.errorMessage.error} />
+            ) : null}
+          </div>
         </form>
-        <p>
+        <div
+          className="ui bottom attached warning message"
+          style={{ marginTop: "20px" }}
+        >
           Click <Link to="/register">here</Link> to register
-        </p>
+        </div>
       </div>
     </div>
   );
@@ -68,7 +78,11 @@ const validate = (formValues) => {
   return errors;
 };
 
-const Wrapper = connect(null, { UserLogin })(Login);
+const mapStateToProps = (state) => {
+  return { status: state.user.status, errorMessage: state.user.data };
+};
+
+const Wrapper = connect(mapStateToProps, { UserLogin })(Login);
 
 export default reduxForm({
   form: "loginForm",

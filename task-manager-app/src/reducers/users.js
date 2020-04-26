@@ -1,13 +1,13 @@
 import { REGISTER, LOGIN, LOGOUT } from "../constants/constants";
-
-export default (state = {}, action) => {
+const initialState = { isAuthed: false };
+export default (state = initialState, action) => {
   switch (action.type) {
     case REGISTER:
       return { ...state, user: action.payload.token };
     case LOGIN:
-      return { ...state, user: action.payload.token };
+      return { ...state, ...action.payload };
     case LOGOUT:
-      return {};
+      return initialState;
     default:
       return state;
   }

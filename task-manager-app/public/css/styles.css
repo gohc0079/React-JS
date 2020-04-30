@@ -181,6 +181,15 @@ button:disabled {
   background: #6b47b8;
 }
 
+.view-btn {
+  border-radius: 2px;
+  color: white;
+  background-color: #6b47b8;
+  padding: 8px 15px;
+  text-decoration: none;
+  text-transform: initial;
+}
+
 .task-hr {
   width: 100%;
   /* old IE */

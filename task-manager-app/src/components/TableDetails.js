@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Icon, Menu, Table } from "semantic-ui-react";
 import { ITEMS_PER_PAGE } from "../constants/constants";
+import { Link } from "react-router-dom";
 
-const TableDetails = ({ details, headers }) => {
+const TableDetails = ({ details, headers }, ref) => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
+
   useEffect(() => {
     let subDetails = [];
     const incrementalIdx = page * ITEMS_PER_PAGE;
@@ -17,7 +19,6 @@ const TableDetails = ({ details, headers }) => {
     subDetails = details.slice(incrementalIdx, lastIndex);
     setData(subDetails);
   }, [page, details]);
-
   const handlePaging = (pageIndex) => {
     setPage((prevPage) => {
       if (
@@ -46,13 +47,18 @@ const TableDetails = ({ details, headers }) => {
               <Table.Cell>{index + (2 * page + 1)}</Table.Cell>
               <Table.Cell>{description}</Table.Cell>
               <Table.Cell>{completed ? "Yes" : "No"}</Table.Cell>
+              <Table.Cell textAlign="center">
+                <Link className="view-btn" to={`/editTask/${_id}`}>
+                  View
+                </Link>
+              </Table.Cell>
             </Table.Row>
           );
         })}
       </Table.Body>
       <Table.Footer>
         <Table.Row>
-          <Table.HeaderCell colSpan="3">
+          <Table.HeaderCell colSpan="4">
             <Menu floated="right" pagination>
               <Menu.Item
                 as="a"
@@ -67,6 +73,7 @@ const TableDetails = ({ details, headers }) => {
                 [...Array(Math.ceil(details.length / ITEMS_PER_PAGE))].map(
                   (e, i) => (
                     <Menu.Item
+                      ref={ref}
                       onClick={() => {
                         setPage(i);
                       }}
@@ -95,4 +102,4 @@ const TableDetails = ({ details, headers }) => {
     </Table>
   );
 };
-export default TableDetails;
+export default React.forwardRef(TableDetails);

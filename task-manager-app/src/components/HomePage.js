@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { getTasks } from "../actions";
 import { connect } from "react-redux";
 import TableDetails from "./TableDetails";
+import moment from "moment";
 
 const Homepage = (props) => {
+  const currDate = moment().format("YYYY-MM-DD");
   const [date, setDate] = useState("");
   const [taskObjs, setTask] = useState([]);
-
+  const childComponentRef = useRef(null);
   let clickEvent = null;
   useEffect(() => {
     props.getTasks();
@@ -30,6 +32,8 @@ const Homepage = (props) => {
     clickEvent.focus();
   };
 
+  console.log(childComponentRef);
+
   return (
     <div className=" container">
       <h1>DashBoard</h1>
@@ -40,7 +44,7 @@ const Homepage = (props) => {
           ref={(e) => (clickEvent = e)}
           className="tablinks"
           onClick={() => {
-            setDate("2020-04-22");
+            setDate(currDate);
           }}
         >
           Today
@@ -48,7 +52,8 @@ const Homepage = (props) => {
         <button
           className="tablinks"
           onClick={() => {
-            setDate("2020-04-23");
+            const nextDay = moment().add(1, "days").format("YYYY-MM-DD");
+            setDate(nextDay);
           }}
         >
           Tomorrow
@@ -62,10 +67,12 @@ const Homepage = (props) => {
           History
         </button>
       </div>
+
       <div>
         <TableDetails
+          ref={childComponentRef}
           details={taskObjs}
-          headers={["ID", "Description", "Completed"]}
+          headers={["ID", "Description", "Completed", ""]}
         />
       </div>
     </div>

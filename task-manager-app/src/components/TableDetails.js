@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Icon, Menu, Table } from "semantic-ui-react";
-import { ITEMS_PER_PAGE } from "../constants/constants";
+import {
+  ITEMS_PER_PAGE,
+  INCREMENT_PAGE,
+  DECREMENT_PAGE,
+  SET_PAGE,
+} from "../constants/constants";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-const TableDetails = ({ details, headers }, ref) => {
+const TableDetails = ({ details, headers }) => {
   const [data, setData] = useState([]);
-  const [page, setPage] = useState(0);
+  const page = useSelector((state) => state.page);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let subDetails = [];
@@ -19,17 +26,17 @@ const TableDetails = ({ details, headers }, ref) => {
     subDetails = details.slice(incrementalIdx, lastIndex);
     setData(subDetails);
   }, [page, details]);
-  const handlePaging = (pageIndex) => {
-    setPage((prevPage) => {
-      if (
-        prevPage + pageIndex > -1 &&
-        prevPage + pageIndex < Math.ceil(details.length / ITEMS_PER_PAGE)
-      ) {
-        return prevPage + pageIndex;
-      }
-      return prevPage;
-    });
-  };
+  // const handlePaging = (pageIndex) => {
+  //   setPage((prevPage) => {
+  //     if (
+  //       prevPage + pageIndex > -1 &&
+  //       prevPage + pageIndex < Math.ceil(details.length / ITEMS_PER_PAGE)
+  //     ) {
+  //       return prevPage + pageIndex;
+  //     }
+  //     return prevPage;
+  //   });
+  // };
 
   return (
     <Table celled>
@@ -64,7 +71,7 @@ const TableDetails = ({ details, headers }, ref) => {
                 as="a"
                 icon
                 onClick={() => {
-                  handlePaging(-1);
+                  dispatch({ type: DECREMENT_PAGE });
                 }}
               >
                 <Icon name="chevron left" />
@@ -73,9 +80,8 @@ const TableDetails = ({ details, headers }, ref) => {
                 [...Array(Math.ceil(details.length / ITEMS_PER_PAGE))].map(
                   (e, i) => (
                     <Menu.Item
-                      ref={ref}
                       onClick={() => {
-                        setPage(i);
+                        dispatch({ type: SET_PAGE, payload: i });
                       }}
                     >
                       {i + 1}
@@ -90,7 +96,13 @@ const TableDetails = ({ details, headers }, ref) => {
                 as="a"
                 icon
                 onClick={() => {
-                  handlePaging(1);
+                  dispatch({
+                    type: INCREMENT_PAGE,
+                    payload: {
+                      length: details.length,
+                      itemsPerPage: ITEMS_PER_PAGE,
+                    },
+                  });
                 }}
               >
                 <Icon name="chevron right" />
@@ -102,4 +114,4 @@ const TableDetails = ({ details, headers }, ref) => {
     </Table>
   );
 };
-export default React.forwardRef(TableDetails);
+export default TableDetails;

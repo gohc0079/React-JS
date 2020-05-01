@@ -1,20 +1,21 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { getTasks } from "../actions";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import TableDetails from "./TableDetails";
 import moment from "moment";
+import { RESET } from "../constants/constants";
 
 const Homepage = (props) => {
   const currDate = moment().format("YYYY-MM-DD");
   const [date, setDate] = useState("");
   const [taskObjs, setTask] = useState([]);
-  const childComponentRef = useRef(null);
+  const dispatch = useDispatch();
+
   let clickEvent = null;
   useEffect(() => {
     props.getTasks();
     handleClick();
   }, []);
-
   useEffect(() => {
     if (date !== "") {
       const taskObj = props.tasks.filter((task) => {
@@ -32,8 +33,6 @@ const Homepage = (props) => {
     clickEvent.focus();
   };
 
-  console.log(childComponentRef);
-
   return (
     <div className=" container">
       <h1>DashBoard</h1>
@@ -45,6 +44,7 @@ const Homepage = (props) => {
           className="tablinks"
           onClick={() => {
             setDate(currDate);
+            dispatch({ type: RESET });
           }}
         >
           Today
@@ -54,6 +54,7 @@ const Homepage = (props) => {
           onClick={() => {
             const nextDay = moment().add(1, "days").format("YYYY-MM-DD");
             setDate(nextDay);
+            dispatch({ type: RESET });
           }}
         >
           Tomorrow
@@ -62,6 +63,7 @@ const Homepage = (props) => {
           className="tablinks"
           onClick={() => {
             setDate("");
+            dispatch({ type: RESET });
           }}
         >
           History
@@ -70,7 +72,6 @@ const Homepage = (props) => {
 
       <div>
         <TableDetails
-          ref={childComponentRef}
           details={taskObjs}
           headers={["ID", "Description", "Completed", ""]}
         />
@@ -80,7 +81,7 @@ const Homepage = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { tasks: Object.values(state.tasks) };
+  return { tasks: Object.values(state.tasks), page: state.page };
 };
 
 export default connect(mapStateToProps, { getTasks })(Homepage);

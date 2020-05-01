@@ -7,3 +7,7 @@ export const GET_TASK = "GET_TASK";
 export const DELETE_TASK = "DELETE_TASK";
 export const GET_TASKS = "GET_TASKS";
 export const ITEMS_PER_PAGE = 2;
+export const INCREMENT_PAGE = "INCREMENT_PAGE";
+export const DECREMENT_PAGE = "DECREMENT_PAGE";
+export const RESET = "RESET";
+export const SET_PAGE = "SET_PAGE";

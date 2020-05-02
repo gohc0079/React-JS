@@ -157,7 +157,7 @@ const Taskform = (props) => {
         format={formatDates}
         placeholder="Due Date"
       ></Field>
-      <div className="ui-button">
+      <div className="ui-button" style={{ marginBottom: "50px" }}>
         <button className="ui button primary">Submit</button>
       </div>
     </form>

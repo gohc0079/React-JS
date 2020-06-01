@@ -10,12 +10,13 @@ const Homepage = ({ tasks, getTasks }) => {
   const nextDate = moment().add(1, "days").format("YYYY-MM-DD");
   const [date, setDate] = useState("");
   const [taskObjs, setTask] = useState([]);
+  const [page, setPage] = useState(0);
   const dispatch = useDispatch();
 
   useEffect(() => {
     getTasks();
   }, []);
-  
+
   useEffect(() => {
     if (date !== "") {
       const taskObj = tasks.filter((task) => {
@@ -39,12 +40,14 @@ const Homepage = ({ tasks, getTasks }) => {
           Tomorrow: nextDate,
           History: "",
         }}
-        onHandleClick={{ setDate, dispatch }}
+        onHandleClick={{ setDate, dispatch, setPage }}
       />
       <div>
         <TableDetails
           details={taskObjs}
           headers={["ID", "Description", "Completed", ""]}
+          onClick={setPage}
+          page={page}
         />
       </div>
     </div>

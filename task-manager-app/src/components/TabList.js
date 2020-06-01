@@ -3,7 +3,7 @@ import { RESET } from "../constants/constants";
 
 const TabList = ({ dates, onHandleClick }) => {
   const datesArr = Object.keys(dates);
-  const { setDate, dispatch } = onHandleClick;
+  const { setDate, dispatch, setPage } = onHandleClick;
   let clickEvt = null;
 
   useEffect(() => {
@@ -20,7 +20,8 @@ const TabList = ({ dates, onHandleClick }) => {
             className="tablinks"
             onClick={() => {
               setDate(dates[date]);
-              dispatch({ type: RESET });
+              //dispatch({ type: RESET });
+              setPage(0);
             }}
           >
             {date}
